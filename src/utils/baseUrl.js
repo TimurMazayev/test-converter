@@ -1,3 +1,5 @@
 export const apiConfig = {
-    baseUrl: process.env.BASE_URL,
+    baseUrl: 'https://api.exchangerate.host',
+    latest: '/latest',
+    convert: '/convert'
 }

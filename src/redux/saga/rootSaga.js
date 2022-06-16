@@ -3,8 +3,8 @@ import {currencyPageSagas} from "./currencySaga";
 
 function* rootSaga() {
     yield all([
-        ...currencyPageSagas,
-    ])
+        currencyPageSagas(),
+    ]);
 }
 
 export default rootSaga;

@@ -1,9 +1,8 @@
 import wretch from 'wretch';
 import {apiConfig} from "../utils/baseUrl";
 
-
-const getTodayCurrency = (payload) => wretch(`${apiConfig.baseUrl}/latest`)
+const getTodayCurrencyApi = () => wretch(`${apiConfig.baseUrl}${apiConfig.latest}?base=UAH`).get().json();
 
 export const valueApi = {
-    getTodayCurrency
+    getTodayCurrencyApi,
 }
