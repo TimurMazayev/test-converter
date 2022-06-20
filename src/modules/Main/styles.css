@@ -1,0 +1,18 @@
+.main_wrapper {
+    background-color: rgb(170, 170, 192);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.main_container {
+    text-align: center;
+    background-image: linear-gradient(to bottom right, grey, rgb(79, 79, 171));
+    border-radius: 7px;
+    padding: 30px;
+}
+
+.main_arrows {
+    font-size: 40px;
+}

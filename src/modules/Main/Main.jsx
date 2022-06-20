@@ -1,60 +1,95 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {Form, Field} from 'react-final-form'
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import {valueActions} from "../../redux/reducers/currencyReducer";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ValueField from "../../components/valueField";
+import {
+  getConvertedCurrency,
+  getTodayCurrencyAction,
+} from "../../redux/saga/sagaActions";
+import "./styles.css";
 
-const Main = (...props) => {
-    const [firstValue, setFirstValue] = useState('UAH');
-    const [secondValue, setSecondValue] = useState('USD');
-    const dispatch = useDispatch();
-    const {convertedCurrency, isLoading} = useSelector((state) => state.value)
-    console.log(firstValue);
-    useEffect(() => {
+const Main = () => {
 
-    }, []);
+  const dispatch = useDispatch();
+  const { todayCurrency, baseCurrency, convertedCurrency } = useSelector(
+    (state) => state.value
+  );
+  
+  const [firstCurrencyType, setFirstCurrencyType] = useState(
+    baseCurrency ?? ""
+  );
+  const [secondCurrencyType, setSecondCurrencyType] = useState("USD");
+  const [amount, setAmount] = useState(1);
+  const [amountFromCurrency, setAmountFromCurrency] = useState(true);
+  const [rate, setRate] = useState();
+  const currencyTypes = ["UAH", "USD", "EUR"];
 
-    const onSubmit = () => {
+  useEffect(() => {
+    dispatch(getTodayCurrencyAction());
+  }, []);
+
+  useEffect(() => {
+    setFirstCurrencyType(baseCurrency);
+    setSecondCurrencyType(currencyTypes[1]);
+    setRate(todayCurrency[currencyTypes[1]]);
+  }, [todayCurrency, baseCurrency]);
+
+  useEffect(() => {
+    if (firstCurrencyType !== undefined && secondCurrencyType !== undefined) {
+      dispatch(
+        getConvertedCurrency({
+          from: firstCurrencyType,
+          to: secondCurrencyType,
+        })
+      );
+      setRate(convertedCurrency);
     }
+  }, [firstCurrencyType, secondCurrencyType, convertedCurrency]);
 
-    const changeValue = (event) => {
-        setFirstValue(event.target.value)
-    }
+  let toAmount, fromAmount;
 
-    return (
+  if (amountFromCurrency) {
+    fromAmount = amount;
+    toAmount = amount * rate || 0;
+  } else {
+    toAmount = amount;
+    fromAmount = amount / rate || 0;
+  }
+
+  const changeFromAmounts = (e) => {
+    setAmount(e.target.value);
+    setAmountFromCurrency(true);
+  };
+
+  const changeToAmounts = (e) => {
+    setAmount(e.target.value);
+    setAmountFromCurrency(false);
+  };
+
+  return (
+    <div className="main_wrapper">
+      <div className="main_container">
         <div>
-            <Form
-                onSubmit={onSubmit}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <label>First value is {firstValue}</label>
-                        <Field name="firstValue" component="input" placeholder="Enter value here" />
-                        <Select
-                            value={firstValue}
-                            onChange={changeValue}
-                        >
-                            <MenuItem value={'USD'}>USD</MenuItem>
-                            <MenuItem value={'EUR'}>EUR</MenuItem>
-                            <MenuItem value={'UAH'}>UAH</MenuItem>
-                        </Select>
-
-                        <label>Second value is {secondValue}</label>
-                        <Field name="firstValue" component="input" placeholder="Enter value here" />
-                        <Select
-                            value={secondValue}
-                            onChange={changeValue}
-                        >
-                            <MenuItem value={'USD'}>USD</MenuItem>
-                            <MenuItem value={'EUR'}>EUR</MenuItem>
-                            <MenuItem value={'UAH'}>UAH</MenuItem>
-                        </Select>
-                        <button type="submit">Submit</button>
-                    </form>
-                )}
-            />
+          <ValueField
+            currencyTypes={currencyTypes}
+            selectedValueType={firstCurrencyType}
+            onChangeValueType={e => setFirstCurrencyType(e.target.value)}
+            onChangeAmounts={changeFromAmounts}
+            amounts={fromAmount}
+          />
         </div>
-    );
+        <div className="main_arrows">↑↓</div>
+        <div>
+          <ValueField
+            currencyTypes={currencyTypes}
+            selectedValueType={secondCurrencyType}
+            onChangeValueType={e => setSecondCurrencyType(e.target.value)}
+            onChangeAmounts={changeToAmounts}
+            amounts={toAmount}
+          />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Main;

@@ -1,22 +1,25 @@
 .Header_container {
-    padding: 0 20px
+    padding: 0 20px;
 }
 
 .header_content {
     padding: 0 20px;
-    display:flex;
-    background: #61dafb;
+    background: #4991c5;
     align-items: center;
+    justify-content: center;
+    display:flex;
+    justify-content: space-between;
+}
 
+.header_currency_wrapper {
+    align-items: center;
+    justify-content: center;
+    display:flex;
 }
 
 .header_currency {
     margin-left: 10px;
     width: 200px;
-    height: 50px;
-    justify-content: center;
-    align-items: center;
-    background-color: yellow;
     overflow:hidden;
     white-space:nowrap;
     display: flex;
@@ -34,7 +37,7 @@
 
 @keyframes scroll{
     0%   {left: 250px;}
-    100% {left: -250px;}
+    100% {left: -300px;}
 }
 @-webkit-keyframes scroll{
     0%   {left: 250px;}

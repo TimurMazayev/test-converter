@@ -1,0 +1,13 @@
+.footer_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(170, 170, 192);
+    border-top: 1px solid black;
+}
+
+.footer_link {
+    margin-left: 10px;
+    text-decoration: none;
+    color: rgb(232, 54, 54);
+}

@@ -1,0 +1,12 @@
+.value_field_select {
+    outline-style: hidden;
+    background-color: aliceblue;
+    border-style: none;
+    padding: 13.5px;
+}
+
+.value_field_input {
+   padding: 5px 20px;
+   margin: 10px;
+   background-color: rgb(184, 191, 199);
+}

@@ -1,7 +1,8 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     todayCurrency: {},
+    baseCurrency: '',
     convertedCurrency: 0,
     isLoading: true,
 };
@@ -10,10 +11,11 @@ const valueSlice = createSlice({
     initialState,
     reducers: {
         setTodayCurrency(state, action) {
-            state.todayCurrency = action.payload;
+            state.baseCurrency = action.payload.base;
+            state.todayCurrency = action.payload.rates;
         },
         setConvertedCurrency(state, action) {
-            state.convertedCurrency = action.payload;
+            state.convertedCurrency = action.payload?.result;
         },
     }
 });
